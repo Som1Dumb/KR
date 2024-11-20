@@ -29,3 +29,26 @@ def generate_sudoku_clauses(grid_size):
                     for j in range(i + 1, len(cells)):
                         clauses.append([-cells[i], -cells[j]])
     return clauses
+
+
+def save_as_cnf(clauses, grid_size, file_path):
+    with open(file_path, 'w') as file:
+        # Write the preamble for CNF format
+        num_variables = grid_size ** 3
+        num_clauses = len(clauses)
+        file.write(f"p cnf {num_variables} {num_clauses}\n")
+
+        # Write each clause
+        for clause in clauses:
+            file.write(" ".join(map(str, clause)) + " 0\n")
+
+
+# Generate clauses for a 9x9 Sudoku puzzle
+grid_size = 9
+clauses = generate_sudoku_clauses(grid_size)
+
+# Save to a .cnf file
+file_path = "sudoku.cnf"
+save_as_cnf(clauses, grid_size, file_path)
+
+file_path
